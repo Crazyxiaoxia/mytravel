@@ -50,17 +50,18 @@ function init() {
 
     markers.forEach(function (item) {
 
-        var url = "http://baike.baidu.com/api/openapi/BaikeLemmaCardApi?scope=103&format=json&appid=379020&bk_key="+item.title+"&bk_length=600";
+        var url = "http://baike.baidu.com/api/openapi/BaikeLemmaCardApi?scope=103&format=json&appid=379020&bk_key=" + item.title + "&bk_length=600";
 
         $.ajax({
             url: url,
-            dataType: 'jsonp',
+            dataType: 'jsonp'
         })
-            .done(function(data) {
-
-                    var abstract = data.abstract;
-                    item.abstract = "<div>简介: " + abstract + "</div>";
-
+            .done(function (data) {
+                var abstract = data.abstract;
+                item.abstract = "<div>简介: " + abstract + "</div>";
+            })
+            .fail(function() {
+                alert('获取简介失败');
             })
     });
 
@@ -82,12 +83,15 @@ function init() {
     function showInfoWindow(marker, infowindow) {
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
-            infowindow.setContent('<h3>' + marker.title + '</h3><p>' + marker.des+'</p><div>'+marker.abstract+'</div>');
+            infowindow.setContent('<h3>' + marker.title + '</h3><p>' + marker.des + '</p><div>' + marker.abstract + '</div>');
             infowindow.open(map, marker);
         }
     }
 };
 
+function mapErrorHandler() {
+    alert('谷歌地图加载失败');
+}
 
 var ViewModel = function () {
     var self = this;
